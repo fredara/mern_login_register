@@ -15,23 +15,36 @@ const signUp = async (req, res) => {
 
   });
 
-  //console.log(newUser)
-
-  //save user
-  const saveUser = await newUser.save().then(() => {
+  const existeCorreo = await User.findOne({ email: email });
+  if(existeCorreo){
+    res.json({
+      statusCode: 401,
+      messageResponse: 'Email Repetido',
+      idUser: '',
+      idToken: ''
+    });
+  }else{
+    //save user
+    const saveUser = await newUser.save();
     //token
     const token = jwt.sign({ id: saveUser._id }, config.SECRET, {
       expiresIn: 86400, //24 horas
     });
-    res.status(200).json({ token, id: saveUser._id });
-  }).catch(error => {
-    res.status(200).json({ sadad: error });
-  });
 
-  //console.log(saveUser)
+    res.json({
+      statusCode: 200,
+      messageResponse: 'Guardado',
+      idUser: saveUser._id,
+      idToken: token
+    });
+  }
 
 
 
+      
+   
+
+  
 
 };
 

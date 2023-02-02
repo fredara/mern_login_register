@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -29,13 +29,18 @@ const Register = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   });
+  const [show, setShow] = useState({ state: false, dataMessage: '' });
+  const handleClose = () => setShow({ state: false, dataMessage: '' });
 
   const onSubmit = data => {
-    //console.log(data);
     registerService(data)
       .then((res) => {
-        console.log(res);
-        //navigate('/home')
+        if (res === 200) {
+          navigate('/home')
+        } else {
+          setShow({ state: true, dataMessage: 'Email Ya se Encuentra Registrado' });
+        }
+
       })
   }
 
@@ -45,6 +50,14 @@ const Register = () => {
       </div>
       <div className="w-full bg-grayOne flex items-center justify-center flex-col">
         <p className="text-white text-5xl mb-16">¡Bienvenido!</p>
+        {
+          show.state
+            ? <div className="text-error-alert text-lg mb-16 bg-btnBg text-btnT rounded-md p-2 w-1/2 text-center relative">
+              {show.dataMessage}
+              <span aria-hidden="true" className="absolute right-4 text-btnT cursor-pointer" onClick={handleClose}>×</span>
+            </div>
+            : null
+        }
         <div className="flex w-1/3">
           <form
             className="flex w-full items-center justify-center flex-col space-y-8"
@@ -94,6 +107,7 @@ const Register = () => {
           </form>
         </div>
       </div>
+
     </div >
   );
 };
