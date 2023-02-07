@@ -7,14 +7,14 @@ import {
 } from "react-router-dom"
 
 
-import Register from './pages/Register/Register'
+import RegisterPage from './pages/RegisterPage/RegisterPage'
 import Home from './pages/Home/Home'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Register />} exact />
+        <Route path="/" element={<RegisterPage />} exact />
         <Route path="/home" element={<Home />} exact />
       </Routes>
     </BrowserRouter>
