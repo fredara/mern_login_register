@@ -48,8 +48,49 @@ const signUp = async (req, res) => {
 
 };
 
+const login = async (req, res) => {
+  const {
+    email,
+    password
+  } = req.body;
+  const existeCorreo = await User.findOne({ email: email });
+
+  if(existeCorreo){
+    const matchPasswordD = await User.comparePassword (password, existeCorreo.password)
+
+    if(!matchPasswordD) {
+      return res.json({
+        statusCode: 401,
+        messageResponse: 'Contraseña Incorrecta',
+        idUser: '',
+        idToken: ''
+      });
+    }else{
+      //token
+      const token = jwt.sign({ id: User._id }, config.SECRET, {
+        expiresIn: 86400, //24 horas
+      });
+
+      res.json({
+        statusCode: 200,
+        messageResponse: 'Iniciado Sesion',
+        idUser: User._id,
+        idToken: token
+      });
+    }
+  }else{
+    res.json({
+      statusCode: 401,
+      messageResponse: 'Email no Registrado',
+      idUser: '',
+      idToken: ''
+    });
+  }
+};
+
 
 
 module.exports = {
-  signUp
+  signUp,
+  login
 };

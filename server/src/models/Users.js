@@ -29,8 +29,18 @@ UsersSchema.statics.encryptPassword = async (password) => {
   return await bcrypt.hash(password, salt); //method hash encrypt password
 };
 
-UsersSchema.statics.comparePassword = async (password, receivedPassword) => {
+/*UsersSchema.statics.comparePassword = async (password, receivedPassword) => {
   return await bcrypt.compare(password, receivedPassword); //method comparereceives 2 params
+};*/
+
+UsersSchema.statics.comparePassword = async function(password, receivedPassword) {
+  try {
+    return await bcrypt.compare(password, receivedPassword); //method comparereceives 2 params
+  } catch (error) {
+    // manejar la excepción aquí
+    console.error(error);
+    return false;
+  }
 };
 
 module.exports = model("user", UsersSchema);
