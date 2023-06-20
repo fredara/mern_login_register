@@ -21,7 +21,7 @@ const signUp = async (req, res) => {
       statusCode: 401,
       messageResponse: 'Email Repetido',
       idUser: '',
-      idToken: ''
+      jwtToken: ''
     });
   }else{
     //save user
@@ -35,7 +35,7 @@ const signUp = async (req, res) => {
       statusCode: 200,
       messageResponse: 'Guardado',
       idUser: saveUser._id,
-      idToken: token
+      jwtToken: token
     });
   }
 
@@ -63,10 +63,11 @@ const login = async (req, res) => {
         statusCode: 401,
         messageResponse: 'Contraseña Incorrecta',
         idUser: '',
-        idToken: ''
+        jwtToken: ''
       });
     }else{
-      //token
+      //todo exitoso
+
       const token = jwt.sign({ id: User._id }, config.SECRET, {
         expiresIn: 86400, //24 horas
       });
@@ -75,7 +76,7 @@ const login = async (req, res) => {
         statusCode: 200,
         messageResponse: 'Iniciado Sesion',
         idUser: User._id,
-        idToken: token
+        jwtToken: token
       });
     }
   }else{
@@ -83,7 +84,7 @@ const login = async (req, res) => {
       statusCode: 401,
       messageResponse: 'Email no Registrado',
       idUser: '',
-      idToken: ''
+      jwtToken: ''
     });
   }
 };

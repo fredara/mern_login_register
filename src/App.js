@@ -6,7 +6,6 @@ import {
   Route
 } from "react-router-dom"
 
-
 import RegisterPage from './pages/RegisterPage/RegisterPage'
 import Home from './pages/Home/Home'
 
